@@ -30,7 +30,7 @@ void gpio_init(void)
     GPIO1->GDIR |= (1 << 9);
 
     /* 设置GPIO1_IO02引脚输出高电平 */
-    GPIO1->DR |= (1 << 9);
+    GPIO1->DR &= ~(1 << 9);
 }
 
 /* 控制连接在GPIO1_09管脚上的led */

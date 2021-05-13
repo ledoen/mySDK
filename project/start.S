@@ -50,6 +50,10 @@ Reset_Handler:
     ldr sp, =0x80200000     	/* 设置IRQ模式下栈指针0x80200000，大小为2MB */
 
 	cpsie i						/* 使能IRQ中断 */
+	
+	mrs r0, cpsr            /* 将cpsr寄存器的值读取到R0中 */
+    bic r0, r0, #0x80       /* 将R0寄存器中的bit7清0，允许IRQ中断 */
+    msr cpsr, r0            /* 将R0的值回写到cpsr寄存器中 */
 
 	b main						/* 跳转到main函数执行 */
 	

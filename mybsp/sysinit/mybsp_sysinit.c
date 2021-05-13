@@ -15,7 +15,7 @@ void system_Init()
 	__set_VBAR((uint32_t)0x87800000);
 	
 	/* 初始化二级中断向量表 */
-	void SystemInitIrqTable();
+	SystemInitIrqTable();
 }
 
 static void defaultIrqHandler(uint32_t intnum, void *param)
@@ -28,7 +28,7 @@ static void defaultIrqHandler(uint32_t intnum, void *param)
 
 void SystemInitIrqTable()
 {
-	  uint32_t i;
+	uint32_t i;
 
 	/* First set all handler to default */
 	for (i = 0; i < NUMBER_OF_INT_VECTORS; i++) {

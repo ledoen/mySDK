@@ -2,9 +2,14 @@
 #include "mybsp_sysinit.h"
 #include "mybsp_gpio.h"
 
+
 void epit1_init(uint32_t prescale, uint32_t settime)
 {
 	/* 设置UART3_RX_DATA为EPIT1输出管脚 */
+	IOMUXC_SetPinMux(IOMUXC_UART3_RX_DATA_EPIT1_OUT, 0);
+	/* EPIT1软重启 */
+	EPIT1->CR |= 1 << 16;
+	while(EPIT1->CR & (1 << 16));
 	
 	/* 设置EPIT1 CR寄存器 
 	* bit[25:24] 	01 ipg66MHz
@@ -20,6 +25,8 @@ void epit1_init(uint32_t prescale, uint32_t settime)
 	EPIT1->CR |= (prescale -1) << 4;
 	EPIT1->CR |= 1 << 3;
 	EPIT1->CR |= 1 << 2;
+	EPIT1->CR |= 1 << 1;
+
 	
 	/* 设置EPIT1 LOAD寄存器 */
 	EPIT1->LR = settime;
@@ -27,8 +34,11 @@ void epit1_init(uint32_t prescale, uint32_t settime)
 	/* 设置EPIT1 CMPR寄存器 */
 	EPIT1->CMPR = 0;
 	
+	/* 使能GIC控制器相应EPIT1中断 */
+	GIC_EnableIRQ(EPIT1_IRQn);
+	
 	/* 注册EPIT1中断服务函数 */
-	SystemInstallIrqHandler(GPT1_IRQn, epit1_irqhadler, NULL);
+	SystemInstallIrqHandler(EPIT1_IRQn, epit1_irqhadler, NULL);
 	
 	/* 使能EPIT1寄存器 */
 	EPIT1->CR |= 1 << 0;
@@ -36,8 +46,8 @@ void epit1_init(uint32_t prescale, uint32_t settime)
 
 void epit1_irqhadler(uint32_t intnum, void *param)
 {
-	static bool ledstate;
-	ledstate = ~ledstate;
+	static uint32_t ledstate;
+	ledstate = !ledstate;
 	led_control(ledstate);
 	
 	/* 清除标志位 */
