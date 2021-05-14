@@ -1,9 +1,18 @@
 #include "mybsp_uart.h"
+#include "mybsp_sysinit.h"
 
 void uart1_init(void)
 {
-	/* 设置UCR1寄存器，使能UART1*/
-	UART1->UCR1 = 1 << 0;
+	/* 设置管脚 */
+	IOMUXC_SetPinMux(IOMUXC_UART1_TX_DATA_UART1_TX, 0);
+	IOMUXC_SetPinMux(IOMUXC_UART1_RX_DATA_UART1_RX, 0);
+	
+	/* 设置UCR1寄存器，关闭UART1 */
+	UART1->UCR1 = 0;
+	
+	/* 重启UART1 */
+	UART1->UCR2 = 0;
+	while(!(UART1->UCR2 & 1<<0));
 	
 	/* 设置UCR2寄存器
 	 * bit[14] 	1 	不使用RTS管脚
@@ -14,6 +23,7 @@ void uart1_init(void)
 	 * bit[2:1]	11	使能收发
 	 * bit[0]	1	不重启
 	*/
+	//UART1->UCR2 = 0x6027;
 	UART1->UCR2 = 1<<14 | 1<<13 | 1<<5 | 1<<2 | 1<<1 | 1<<0;
 	
 	/* 设置UCR3寄存器，芯片手册要求第二位置1 */
@@ -25,21 +35,24 @@ void uart1_init(void)
 	 * 默认时钟为80MHz
 	 * 分频后为16MHz
 	*/
-	UART1->UFCR |= 1 << 7;
+	UART1->UFCR = 1<<7;
 	/* 设置UBIR寄存器及UBMIR寄存器
 	 * 使波特率为115200
 	*/
-	UART1->UBMR = 624;
-	UART1->UBIR = 71;
-	
+	UART1->UBIR = 0x47;
+	UART1->UBMR = 0x270;
+
 	/* 设置UCR4寄存器，使能ReceiveReady中断*/
 	//UART1->UCR4 = 1;
 	
 	/* 注册中断服务函数 */
 	/* 使能GIC相应UART1中断*/
 	
-	uint8_t pri[] = "hello world";
-	UART1_WriteBlocking(pri,sizeof(pri)-1);	
+	/* 设置UCR1寄存器，使能UART1*/
+	UART1->UCR1 = 1 << 0;
+	
+	UART1_WriteByte('\r');
+	UART1_WriteByte('\n');
 }
 
 

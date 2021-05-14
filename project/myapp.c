@@ -10,11 +10,11 @@ int main(void)
 	uart1_init();
 	gpio_init();
 	epit1_init(66, 2000000);
-	
-	//led_control(true);
+
+	//uint8_t pri[] = "hello world!";
+	//UART1_WriteBlocking(pri, sizeof(pri)-1);	
 	while(1)
 	{
 		
 	}
-	
 }

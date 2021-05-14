@@ -12,7 +12,7 @@ void uart1_init(void);
 /* 发送字符 */
 static inline void UART1_WriteByte(uint8_t data)
 {
-    UART1->UTXD = data & 0xFF;
+	UART1->UTXD = data & 0xFF;
 }
 
 /* 发送字符串 */
