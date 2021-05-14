@@ -4,12 +4,14 @@ TARGET 			= mysdk_app
 INCLUDEDIRS 	= nxpheader \
 				mybsp/sysinit \
 				mybsp/gpit \
-				mybsp/gpio
+				mybsp/gpio \
+				mybsp/uart
 			
 SRCDIRS 		= project \
 				mybsp/sysinit \
 				mybsp/gpit \
-				mybsp/gpio
+				mybsp/gpio \
+				mybsp/uart
 		
 INCLUDE 		= $(patsubst %, -I %, $(INCLUDEDIRS))
 
