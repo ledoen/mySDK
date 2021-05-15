@@ -42,11 +42,14 @@ void uart1_init(void)
 	UART1->UBIR = 0x47;
 	UART1->UBMR = 0x270;
 
-	/* 设置UCR4寄存器，使能ReceiveReady中断*/
-	//UART1->UCR4 = 1;
+	/* 设置UCR4寄存器，使能RDR中断*/
+	UART1->UCR4 = 1;
 	
 	/* 注册中断服务函数 */
+	SystemInstallIrqHandler(UART1_IRQn, uart1_irqhandler, NULL);
+	
 	/* 使能GIC相应UART1中断*/
+	GIC_EnableIRQ(UART1_IRQn);
 	
 	/* 设置UCR1寄存器，使能UART1*/
 	UART1->UCR1 = 1 << 0;
@@ -69,4 +72,16 @@ void UART1_WriteBlocking(const uint8_t *data, size_t length)
         }
         UART1_WriteByte(*(data++));
     }
+}
+
+void uart1_irqhandler(uint32_t intnum, void *param)
+{
+	/* 读取URXD寄存器 */
+	uint8_t data;
+	data = UART1->URXD & 0xff;
+	
+	/* 回显 */
+	if(data == 0xd)
+		UART1_WriteByte(0xa);
+	UART1_WriteByte(data);
 }

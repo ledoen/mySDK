@@ -11,8 +11,8 @@ int main(void)
 	gpio_init();
 	epit1_init(66, 2000000);
 
-	//uint8_t pri[] = "hello world!";
-	//UART1_WriteBlocking(pri, sizeof(pri)-1);	
+	uint8_t pri[] = "hello world!";
+	UART1_WriteBlocking(pri, sizeof(pri)-1);	
 	while(1)
 	{
 		

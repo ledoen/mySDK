@@ -20,4 +20,8 @@ void UART1_WriteBlocking(const uint8_t *data, size_t length);
 
 /* 发送数字 */
 
+
+/* 中断服务函数 */
+void uart1_irqhandler(uint32_t intnum, void *param);
+
 #endif
