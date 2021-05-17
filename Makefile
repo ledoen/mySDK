@@ -5,13 +5,15 @@ INCLUDEDIRS 	= nxpheader \
 				mybsp/sysinit \
 				mybsp/gpit \
 				mybsp/gpio \
-				mybsp/uart
+				mybsp/uart \
+				mybsp/pwm
 			
 SRCDIRS 		= project \
 				mybsp/sysinit \
 				mybsp/gpit \
 				mybsp/gpio \
-				mybsp/uart
+				mybsp/uart \
+				mybsp/pwm
 		
 INCLUDE 		= $(patsubst %, -I %, $(INCLUDEDIRS))
 

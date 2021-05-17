@@ -7,3 +7,5 @@ joeyvm 20210514 NIGHT
     1.完成uart1发送功能调试
 joeyvm 20210515 DAY
     1.完成uart1中断接收功能
+oracle 20210517 DAY
+	1.完成PWM7初始化功能，待使用舵机测试
