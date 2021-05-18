@@ -19,7 +19,7 @@ static inline void UART1_WriteByte(uint8_t data)
 void UART1_WriteBlocking(const uint8_t *data, size_t length);
 
 /* 发送数字 */
-
+void UART1_WriteNum(const uint32_t data);
 
 /* 中断服务函数 */
 void uart1_irqhandler(uint32_t intnum, void *param);

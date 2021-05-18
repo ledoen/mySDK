@@ -85,3 +85,77 @@ void uart1_irqhandler(uint32_t intnum, void *param)
 		UART1_WriteByte(0xa);
 	UART1_WriteByte(data);
 }
+
+void UART1_WriteNum(const uint32_t data)
+{
+	/* 从高到低取出每四位进行处理，共进行8次 */
+	uint8_t ByteData;
+	for(int i=0; i<8; i++){
+		ByteData = ((data >> (28-i*4)) & 0xf);	/* 取出每4位 */
+		switch(ByteData){
+			case 0x0:{
+				UART1_WriteByte('0');
+				break;
+			}
+			case 0x1:{
+				UART1_WriteByte('1');
+				break;
+			}
+			case 0x2:{
+				UART1_WriteByte('2');
+				break;
+			}
+			case 0x3:{
+				UART1_WriteByte('3');
+				break;
+			}
+			case 0x4:{
+				UART1_WriteByte('4');
+				break;
+			}
+			case 0x5:{
+				UART1_WriteByte('5');
+				break;
+			}
+			case 0x6:{
+				UART1_WriteByte('6');
+				break;
+			}
+			case 0x7:{
+				UART1_WriteByte('7');
+				break;
+			}
+			case 0x8:{
+				UART1_WriteByte('8');
+				break;
+			}case 0x9:{
+				UART1_WriteByte('9');
+				break;
+			}
+			case 0xa:{
+				UART1_WriteByte('A');
+				break;
+			}
+			case 0xb:{
+				UART1_WriteByte('B');
+				break;
+			}
+			case 0xc:{
+				UART1_WriteByte('C');
+				break;
+			}
+			case 0xd:{
+				UART1_WriteByte('D');
+				break;
+			}
+			case 0xe:{
+				UART1_WriteByte('E');
+				break;
+			}
+			case 0xf:{
+				UART1_WriteByte('F');
+				break;
+			}
+		}
+	}
+}

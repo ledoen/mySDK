@@ -2,7 +2,6 @@
 #include "mybsp_sysinit.h"
 #include "mybsp_gpio.h"
 
-
 void epit1_init(uint32_t prescale, uint32_t settime)
 {
 	/* 设置UART3_RX_DATA为EPIT1输出管脚 */

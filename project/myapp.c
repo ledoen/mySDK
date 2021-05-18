@@ -4,6 +4,7 @@
 #include "mybsp_gpio.h"
 #include "mybsp_uart.h"
 #include "mybsp_pwm.h"
+#include "mybsp_gpt.h"
 
 int main(void)
 {
@@ -11,7 +12,9 @@ int main(void)
 	uart1_init();
 	gpio_init();
 	epit1_init(66, 2000000);
-	pwm6_init(66, 20000, 500);
+	pwm6_init(66, 10000, 50);
+	pwm3_init(66, 20000, 500);
+	gpt1_init(66);
 	
 	uint8_t pri[] = "hello world!";
 	UART1_WriteBlocking(pri, sizeof(pri)-1);	
