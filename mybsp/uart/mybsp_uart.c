@@ -1,6 +1,10 @@
 #include "mybsp_uart.h"
 #include "mybsp_sysinit.h"
 
+uint32_t strindex;
+uint16_t rotorPulse;
+
+uint8_t strline[32] ="";
 void uart1_init(void)
 {
 	/* 设置管脚 */
@@ -76,14 +80,31 @@ void UART1_WriteBlocking(const uint8_t *data, size_t length)
 
 void uart1_irqhandler(uint32_t intnum, void *param)
 {
+	/***********echo模式*************/
 	/* 读取URXD寄存器 */
-	uint8_t data;
-	data = UART1->URXD & 0xff;
+	//uint8_t data;
+	//data = UART1->URXD & 0xff;
 	
 	/* 回显 */
-	if(data == 0xd)
-		UART1_WriteByte(0xa);
-	UART1_WriteByte(data);
+	//if(data == 0xd)
+		//UART1_WriteByte(0xa);
+	//UART1_WriteByte(data);
+	/*********以上为echo模式*********/
+	
+	/* 读取URXD寄存器 */
+	uint8_t data;
+	data = UART1->URXD & 0xff;		//读取URXD寄存器，取出收到的字符
+	strline[strindex] = data;		//将字符加入到strline最后一位
+	strindex++;						
+	
+	if(data == 0xa){				//检测是否回车，如果回车，一行数据读取完毕
+		//UART1_WriteBlocking(strline, strindex);
+		DataProcess(strline);		//调用数据处理函数
+		for(int i=0; i<strindex; i++){	//将strline清零，接收下一行数据
+			strline[i] = 0;
+		}
+		strindex = 0;				//index清零
+	}
 }
 
 void UART1_WriteNum(const uint32_t data)
@@ -158,4 +179,24 @@ void UART1_WriteNum(const uint32_t data)
 			}
 		}
 	}
+}
+
+void DataProcess(const uint8_t *strdata)
+{
+	/*判断数据有效性*/
+	if(strdata[0] !='D')
+		return;
+	
+	/*判断数据类型是否为角度数据*/
+	if(strdata[1] == 'A'){
+		uint16_t angledata = 0;
+		/*'0'的ASC码为48*/
+		angledata = (strdata[2]-48)*100 + (strdata[3]-48)*10 + (strdata[4]-48);
+		
+		//UART1_WriteNum(angledata);
+		if(angledata <= 180){
+			rotorPulse = 500 + angledata * 100/9;
+		}
+		UART1_WriteNum(rotorPulse);
+	}	
 }

@@ -8,10 +8,14 @@
 
 int main(void)
 {
+	/*全局变量赋初值*/
+	strindex = 0;
+	rotorPulse = 1500;
+	
 	system_Init();
 	uart1_init();
 	gpio_init();
-	epit1_init(66, 2000000);
+	epit1_init(66, 1000000);
 	pwm6_init(66, 10000, 50);
 	pwm3_init(66, 20000, 500);
 	gpt1_init(66);
