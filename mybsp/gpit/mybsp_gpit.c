@@ -3,6 +3,7 @@
 #include "mybsp_gpio.h"
 #include "mybsp_pwm.h"
 #include "mybsp_uart.h"
+#include "mybsp_pid.h"
 
 void epit1_init(uint32_t prescale, uint32_t settime)
 {
@@ -50,7 +51,7 @@ void epit1_irqhadler(uint32_t intnum, void *param)
 	static uint32_t ledstate;
 	ledstate = !ledstate;
 	led_control(ledstate);
-	
+	PID_control();
 	/*每个固定的时间，控制舵机转动*/
 	pwm3_setduty(rotorPulse);
 	/* 清除标志位 */

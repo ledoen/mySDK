@@ -61,7 +61,7 @@ void gpt1_irqhandler(uint32_t intnum, void *param)
 	UART1_WriteNum(flightTime);
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-	
+	/*
 	if(flightTime <= 294){
 		pwm3_setduty(500);
 	}
@@ -71,6 +71,7 @@ void gpt1_irqhandler(uint32_t intnum, void *param)
 	else if(flightTime >= 1471){
 		pwm3_setduty(2500);
 	}
+	*/
 	
 	/*清空中断标志位*/
 	GPT1->SR |= 1<<3;
