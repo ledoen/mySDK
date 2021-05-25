@@ -3,10 +3,9 @@
 
 #include "commen_headers.h"
 /*声明数据*/
-extern uint16_t Kp, Kd;
-extern float Ki;
-extern uint32_t targetTime;
-int16_t Pp, Ii, Dd, PID;
+extern float Kp, Ki, Kd;
+extern int16_t targetTime;
+float Pp, Ii, Dd, PID;
 int16_t error, error_old;
 uint16_t Dt;
 

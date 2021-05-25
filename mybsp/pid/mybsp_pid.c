@@ -2,16 +2,15 @@
 #include "mybsp_gpt.h"
 #include "mybsp_uart.h"
 
-uint16_t Kp, Kd;
-float Ki;
-uint32_t targetTime;
+float Kp, Ki, Kd;
+int16_t targetTime;
 
 void PID_init(void)
 {
-	targetTime = 900;
-	Kp = 1;
-	Ki = 1;
-	Kd = 5;
+	targetTime = 1000;
+	Kp = 2;
+	Ki = 0.06;
+	Kd = 0;
 	Dt = 5;
 	
 	Pp = 0;
@@ -26,10 +25,10 @@ void PID_init(void)
 
 void PID_control(void)
 {
-	error = flightTime - targetTime;
-	Pp = Kp * error;
-	if(error > -150 && error < 150){
-		Ii += (int16_t)Ki * error; 
+	error = (int16_t)(flightTime - targetTime);
+	Pp = (int16_t)Kp * error;
+	if((error > -400) && (error < 400)){
+		Ii += Ki * error; 
 	}
 	else{
 		Ii = 0;
@@ -44,5 +43,18 @@ void PID_control(void)
 	else if(PID < -2000)
 		PID = -2000;
 	
-	rotorPulse = -PID / 2 + 1500 ;  
+	rotorPulse = (int16_t)(-PID / 2) + 1500 ;
+	
+	UART1_WriteByte('I');
+	UART1_WriteNum(Ii);
+	UART1_WriteByte('\r');
+	UART1_WriteByte('\n');
+	UART1_WriteByte('E');
+	UART1_WriteNum(error);
+	UART1_WriteByte('\r');
+	UART1_WriteByte('\n');
+	UART1_WriteByte('C');
+	UART1_WriteNum(rotorPulse);
+	UART1_WriteByte('\r');
+	UART1_WriteByte('\n');
 }

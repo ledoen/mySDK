@@ -57,11 +57,11 @@ void gpt1_irqhandler(uint32_t intnum, void *param)
 	
 	if(flightTime > 5000)
 		flightTime = 10000 - flightTime;
-	
+	/*
 	UART1_WriteNum(flightTime);
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-	/*
+
 	if(flightTime <= 294){
 		pwm3_setduty(500);
 	}
