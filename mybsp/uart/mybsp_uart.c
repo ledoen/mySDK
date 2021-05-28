@@ -1,5 +1,6 @@
 #include "mybsp_uart.h"
 #include "mybsp_sysinit.h"
+#include "mybsp_pid.h"
 
 uint32_t strindex;
 uint16_t rotorPulse;
@@ -198,5 +199,35 @@ void DataProcess(const uint8_t *strdata)
 			rotorPulse = 500 + angledata * 100/9;
 		}
 		UART1_WriteNum(rotorPulse);
+	}
+	
+	/*判断数据类型是否为Kp数据*/
+	if(strdata[1] == 'p'){
+		float kpdata = 0;
+		/*Kp数据的格式为Dp00.0*/
+		kpdata = (strdata[2]-48)*10 + (strdata[3] - 48) + (float)(strdata[5] -48)/10;
+		if(kpdata < 100 && kpdata >=0){
+			Kp = kpdata;
+		}
+	}
+	
+	/*判断数据类型是否为Ki数据*/
+	if(strdata[1] == 'i'){
+		float kidata = 0;
+		/*Kp数据的格式为Di0.00*/
+		kidata = (strdata[2]-48) + (float)(strdata[4] - 48)/10 + (float)(strdata[5] -48)/100;
+		if(kidata < 10 && kidata >=0){
+			Ki = kidata;
+		}
+	}
+	
+	/*判断数据类型是否为Kd数据*/
+	if(strdata[1] == 'd'){
+		float kddata = 0;
+		/*Kd数据的格式为Dd00.0*/
+		kddata = (strdata[2]-48)*10 + (strdata[3] - 48) + (float)(strdata[5] -48)/10;
+		if(kddata < 100 && kddata >=0){
+			Kd = kddata;
+		}
 	}	
 }
