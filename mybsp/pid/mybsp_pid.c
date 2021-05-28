@@ -45,20 +45,9 @@ void PID_control(void)
 	
 	rotorPulse = (int16_t)(-PID / 2) + 1500 ;
 	
-	// UART1_WriteByte('p');
-	// UART1_WriteNum((uint32_t)(Kp*10));
-	// UART1_WriteByte('\r');
-	// UART1_WriteByte('\n');
-	UART1_WriteByte('i');
-	UART1_WriteNum((uint32_t)(Ki*100));
+	UART1_WriteByte('e');
+	UART1_WriteNum(0xffff0000+error);		/*加上0xffff0000，将int16转换为uint32*/
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-	UART1_WriteByte('d');
-	UART1_WriteNum((uint32_t)(Kd*10));
-	UART1_WriteByte('\r');
-	UART1_WriteByte('\n');
-	UART1_WriteByte('D');
-	UART1_WriteNum((uint32_t)(Dd));
-	UART1_WriteByte('\r');
-	UART1_WriteByte('\n');
+
 }
