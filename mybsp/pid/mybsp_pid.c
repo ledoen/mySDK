@@ -8,9 +8,9 @@ int16_t targetTime;
 void PID_init(void)
 {
 	targetTime = 1000;
-	Kp = 1.5;
-	Ki = 0.04;
-	Kd = 0.5;
+	Kp = 0.7;
+	Ki = 0.02;
+	Kd = 20;
 	Dt = 5;
 	
 	Pp = 0;
