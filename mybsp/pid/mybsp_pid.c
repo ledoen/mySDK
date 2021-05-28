@@ -8,9 +8,9 @@ int16_t targetTime;
 void PID_init(void)
 {
 	targetTime = 1000;
-	Kp = 2;
-	Ki = 0.06;
-	Kd = 0;
+	Kp = 1.5;
+	Ki = 0.04;
+	Kd = 0.5;
 	Dt = 5;
 	
 	Pp = 0;
@@ -45,16 +45,20 @@ void PID_control(void)
 	
 	rotorPulse = (int16_t)(-PID / 2) + 1500 ;
 	
-	UART1_WriteByte('I');
-	UART1_WriteNum(Ii);
+	// UART1_WriteByte('p');
+	// UART1_WriteNum((uint32_t)(Kp*10));
+	// UART1_WriteByte('\r');
+	// UART1_WriteByte('\n');
+	UART1_WriteByte('i');
+	UART1_WriteNum((uint32_t)(Ki*100));
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-	UART1_WriteByte('E');
-	UART1_WriteNum(error);
+	UART1_WriteByte('d');
+	UART1_WriteNum((uint32_t)(Kd*10));
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-	UART1_WriteByte('C');
-	UART1_WriteNum(rotorPulse);
+	UART1_WriteByte('D');
+	UART1_WriteNum((uint32_t)(Dd));
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
 }
