@@ -55,8 +55,8 @@ void gpt1_irqhandler(uint32_t intnum, void *param)
 	else
 		flightTime = time - startTime;	/*下降沿*/
 	
-	if(flightTime > 5000)
-		flightTime = 10000 - flightTime;
+	if(flightTime > 10000)
+		flightTime = 20000 - flightTime;
 	/*
 	UART1_WriteNum(flightTime);
 	UART1_WriteByte('\r');

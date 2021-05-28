@@ -18,7 +18,7 @@ int main(void)
 	gpio_init();
 	PID_init();
 	epit1_init(66, 50000);
-	pwm6_init(66, 10000, 50);
+	pwm6_init(66, 20000, 50);
 	pwm3_init(66, 20000, 1500);
 	gpt1_init(66);
 	

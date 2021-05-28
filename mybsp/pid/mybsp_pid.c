@@ -26,8 +26,8 @@ void PID_init(void)
 void PID_control(void)
 {
 	error = (int16_t)(flightTime - targetTime);
-	Pp = (int16_t)Kp * error;
-	if((error > -400) && (error < 400)){
+	Pp = Kp * error;
+	if((error > -500) && (error < 500)){
 		Ii += Ki * error; 
 	}
 	else{
