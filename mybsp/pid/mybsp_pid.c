@@ -49,5 +49,10 @@ void PID_control(void)
 	UART1_WriteNum(0xffff0000+error);		/*加上0xffff0000，将int16转换为uint32*/
 	UART1_WriteByte('\r');
 	UART1_WriteByte('\n');
-
+	
+	uint32_t Ks = ((uint32_t)(Kp*10))<<20 | ((uint32_t)(Ki*100))<<10 | (uint32_t)(Kd*10);
+	UART1_WriteByte('K');
+	UART1_WriteNum(Ks);
+	UART1_WriteByte('\r');
+	UART1_WriteByte('\n');
 }

@@ -28,3 +28,5 @@ oracle 20210528 DAY
 	1.实现接收Kp,Ki,Kd数据
 joeyvm 20210528 NIGHT
 	1.实现发送error数据
+joeyvm 20210530 DAY
+	1.实现发送Kp、Ki、Kd
